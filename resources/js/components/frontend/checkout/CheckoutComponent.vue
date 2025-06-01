@@ -158,17 +158,19 @@
                         <Swiper :speed="1000" slidesPerView="auto" :spaceBetween="16">
                             <SwiperSlide v-for="riderTip in riderTips" :key="riderTip"
                                 class="active-group !w-fit !relative">
-                                <label :class="riderTip.flat_amount === checkoutProps.form.rider_tip ? 'active' : ''"
+                                <label :class="calculatePercentageTip(riderTip.amount) === checkoutProps.form.rider_tip ? 'active' : ''"
                                     :for="riderTip.label"
                                     class="db-field-radio px-2.5 py-2 rounded-lg border border-[#F7F7FC] bg-[#F7F7FC]">
                                     <div class="custom-radio sm">
                                         <input v-model="checkoutProps.form.rider_tip" type="radio" :id="riderTip.label"
-                                            :value="riderTip.flat_amount" class="custom-radio-field">
+                                            :value="calculatePercentageTip(riderTip.amount)" 
+                                            class="custom-radio-field"
+                                            @change="updateRiderTipPercentage(riderTip.amount)">
                                         <span class="custom-radio-span"></span>
                                     </div>
-                                    <label v-if="riderTip.flat_amount > 0" :for="riderTip.label"
+                                    <label v-if="riderTip.amount > 0" :for="riderTip.label"
                                         class="db-field-label text-sm text-heading">
-                                        {{ riderTip.currency_amount }}
+                                        {{ riderTip.flat_amount }}%
                                     </label>
                                     <label v-else :for="riderTip.label" class="db-field-label text-sm text-heading">
                                         {{ riderTip.label }}
@@ -330,6 +332,7 @@
                                         class="flex items-center justify-between text-heading ">
                                         <span class="text-sm leading-6 capitalize">
                                             {{ $t('label.rider_tips') }}
+                                            <span>({{ checkoutProps.form.rider_tip_percentage }}%)</span>
                                         </span>
                                         <span class="text-sm leading-6 capitalize text-green-600">
                                             {{
@@ -462,7 +465,9 @@ export default {
                     items: [],
                     point_discount_amount: 0,
                     applied_points: 0,
-                    rider_tip: 0
+                    rider_tip: 0,
+                    rider_tip_percentage: 0,
+                    is_percentage_tip: false,
                 }
             },
             addressProps: {
@@ -978,6 +983,12 @@ export default {
             }
             this.$store.dispatch("frontendCart/paymentMethod", paymentMethod);
         },
+        updateRiderTipPercentage(percentage) {
+            this.checkoutProps.form.rider_tip_percentage = percentage;
+        },
+        calculatePercentageTip(percentage) {
+            return parseFloat(((parseFloat(this.subtotal) * percentage) / 100).toFixed(2));
+        },
     },
     watch: {
         globalState: {
@@ -1013,6 +1024,11 @@ export default {
                     this.checkoutProps.form.address_id = null;
                     this.localAddress = {};
                 }
+            }
+        },
+        subtotal: function() {
+            if (this.checkoutProps.form.rider_tip_percentage > 0) {
+                this.checkoutProps.form.rider_tip = this.calculatePercentageTip(this.checkoutProps.form.rider_tip_percentage);
             }
         }
     }

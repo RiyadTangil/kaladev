@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('label');
             $table->decimal('amount', 13);
+            $table->enum('type', ['fixed', 'percentage'])->default('fixed');
             $table->string('creator_type')->nullable();
             $table->unsignedBigInteger('creator_id')->nullable();
             $table->string('editor_type')->nullable();

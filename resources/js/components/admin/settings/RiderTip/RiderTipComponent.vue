@@ -15,9 +15,7 @@
                 <thead class="db-table-head">
                     <tr class="db-table-head-tr">
                         <th class="db-table-head-th">{{ $t("label.label") }}</th>
-                        <th class="db-table-head-th">
-                            {{ $t("label.amount") }}
-                        </th>
+                        <th class="db-table-head-th">{{ $t("label.percentage") }}</th>
                         <th class="db-table-head-th">
                             {{ $t("label.action") }}
                         </th>
@@ -29,7 +27,7 @@
                             {{ riderTip.label }}
                         </td>
                         <td class="db-table-body-td">
-                            {{ riderTip.flat_amount }}
+                            {{ riderTip.flat_amount }}%
                         </td>
 
                         <td class="db-table-body-td">
@@ -126,7 +124,8 @@ export default {
             this.$store.dispatch("riderTip/edit", riderTip.id);
             this.props.form = {
                 label: riderTip.label,
-                amount: riderTip.flat_amount
+                amount: riderTip.flat_amount,
+                type: "percentage"
             };
             this.loading.isActive = false;
         },

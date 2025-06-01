@@ -20,9 +20,10 @@ class RiderTipResource extends JsonResource
             "id"              => $this->id,
             "label"           => $this->label,
             "amount"          => $this->amount,
+            "type"            => 'percentage',
             "convert_amount"  => AppLibrary::convertAmountFormat($this->amount),
             "flat_amount"     => AppLibrary::flatAmountFormat($this->amount),
-            "currency_amount" => AppLibrary::currencyAmountFormat($this->amount)
+            "currency_amount" => $this->amount . '%'
         ];
     }
 }

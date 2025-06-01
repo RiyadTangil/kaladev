@@ -23,13 +23,14 @@
                                 }}</small>
                         </div>
                         <div class="form-col-12 sm:form-col-6">
-                            <label for="amount" class="db-field-title required">{{
-                                $t("label.amount")
-                                }}</label>
+                            <label for="amount" class="db-field-title required">{{ $t("label.percentage") }}</label>
                             <input v-on:keypress="floatNumber($event)" v-model="props.form.amount"
                                 v-bind:class="errors.amount ? 'invalid' : ''" type="text" id="amount"
                                 class="db-field-control" />
                             <small class="db-field-alert" v-if="errors.amount">{{ errors.amount[0] }}</small>
+                            <small v-if="props.form.amount > 100" class="db-field-alert">
+                                {{ $t("message.percentage_cannot_exceed_100") }}
+                            </small>
                         </div>
 
                         <div class="form-col-12">
@@ -94,11 +95,22 @@ export default {
             this.$props.props.form = {
                 label: "",
                 amount: "",
+                type: "percentage"
             };
         },
 
         save: function () {
             try {
+                if (this.props.form.amount > 100) {
+                    this.errors = {
+                        amount: ["Percentage cannot exceed 100%"]
+                    };
+                    return;
+                }
+                
+                // Always set type to percentage
+                this.props.form.type = "percentage";
+                
                 const tempId = this.$store.getters["riderTip/temp"].temp_id;
                 this.loading.isActive = true;
                 this.$store.dispatch("riderTip/save", this.props).then((res) => {
@@ -111,6 +123,7 @@ export default {
                     this.props.form = {
                         label: "",
                         amount: "",
+                        type: "percentage"
                     };
                     this.errors = {};
                 }).catch((err) => {

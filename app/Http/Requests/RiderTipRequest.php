@@ -28,6 +28,7 @@ class RiderTipRequest extends FormRequest
         return [
             'label'  => ['required', 'string', 'max:190', Rule::unique("rider_tips", "label")->ignore($this->route('riderTip.id'))],
             'amount' => ['required', 'numeric'],
+            'type'   => ['required', Rule::in(['fixed', 'percentage'])],
         ];
     }
 }

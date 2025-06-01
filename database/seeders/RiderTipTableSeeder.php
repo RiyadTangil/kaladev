@@ -23,42 +23,35 @@ class RiderTipTableSeeder extends Seeder
                 [
                     'label'      => 'No Tip',
                     'amount'     => 0,
+                    'type'       => 'percentage',
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
                 [
-                    'label'      => '10',
+                    'label'      => '5%',
+                    'amount'     => 5,
+                    'type'       => 'percentage',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'label'      => '10%',
                     'amount'     => 10,
+                    'type'       => 'percentage',
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
                 [
-                    'label'      => '20',
+                    'label'      => '15%',
+                    'amount'     => 15,
+                    'type'       => 'percentage',
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ],
+                [
+                    'label'      => '20%',
                     'amount'     => 20,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ],
-                [
-                    'label'      => '30',
-                    'amount'     => 30,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ],
-                [
-                    'label'      => '40',
-                    'amount'     => 40,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ],
-                [
-                    'label'      => '50',
-                    'amount'     => 50,
-                    'created_at' => now(),
-                    'updated_at' => now()
-                ],
-                [
-                    'label'      => '100',
-                    'amount'     => 100,
+                    'type'       => 'percentage',
                     'created_at' => now(),
                     'updated_at' => now()
                 ],
