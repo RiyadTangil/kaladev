@@ -1,7 +1,7 @@
 <template>
     <LoadingComponent :props="loading" />
     <div v-if="sliders.length > 0" class="container mb-5 mt-5 sm:mt-8">
-        <Swiper dir="rtl" :slides-per-view="1" :speed="1000" :loop="true" :navigation="true"
+        <Swiper :slides-per-view="1" :speed="1000" :loop="true" :navigation="true"
             :pagination="{ clickable: true }" :autoplay="{ delay: 2500 }" :modules="modules" class="banner-swiper">
             <SwiperSlide class="" v-for="(slider, index) in sliders" :key="index">
                 <img class="w-full rounded-2xl" :src="slider.image" alt="banner">
