@@ -44,6 +44,7 @@ export default {
                     phone: "",
                     token: "",
                     code: "",
+                    password: "",
                 },
             },
             errors: '',
@@ -63,6 +64,7 @@ export default {
             if (Object.keys(otp).length > 0) {
                 this.props.form.phone = otp.otp.phone;
                 this.props.form.code = otp.otp.code;
+                this.props.form.password = otp.otp.password;
             } else {
                 this.$router.push({name: 'auth.guestLogin'});
             }
@@ -92,6 +94,7 @@ export default {
                     this.props.form = {
                         phone: "",
                         code: "",
+                        password: "",
                     };
                     this.errors = '';
                     alertService.success(LoginRes.data.message);

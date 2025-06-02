@@ -27,6 +27,7 @@ class GuestSignupPhoneRequest extends FormRequest
         return [
             'phone'     => ['required', 'string', 'max:190'],
             'code'      => ['required', 'string'],
+            'password'  => ['required', 'string', 'min:6'],
         ];
     }
 }

@@ -172,9 +172,9 @@
                                         class="db-field-label text-sm text-heading">
                                         {{ riderTip.flat_amount }}%
                                     </label>
-                                    <label v-else :for="riderTip.label" class="db-field-label text-sm text-heading">
+                                    <lrole_idabel v-else :for="riderTip.label" class="db-field-label text-sm text-heading">
                                         {{ riderTip.label }}
-                                    </label>
+                                    </lrole_idabel>
                                 </label>
                             </SwiperSlide>
                         </Swiper>

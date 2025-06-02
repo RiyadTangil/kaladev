@@ -17,16 +17,20 @@ class SubscriberMail extends Mailable
      */
 
     public string $title;
-    public mixed $message;
+    public string $content;
 
     public function __construct($title, $message)
     {
         $this->title = $title;
-        $this->message = $message;
+        $this->content = $message;
     }
 
     public function build()
     {
-        return $this->subject("Subscriber Notification")->markdown('emails.subscriber');
+        return $this->subject($this->title)
+                    ->markdown('emails.subscriber', [
+                        'title' => $this->title,
+                        'message' => $this->content
+                    ]);
     }
 }

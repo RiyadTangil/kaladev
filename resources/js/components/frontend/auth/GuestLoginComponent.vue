@@ -24,6 +24,16 @@
                         {{ errors.phone[0] }}
                     </small>
                 </div>
+                <div class="mb-6">
+                    <label class="text-sm capitalize mb-1 text-heading">{{ $t('label.password') }}</label>
+                    <div class="w-full h-12 rounded-lg border px-4 flex items-center border-[#D9DBE9]">
+                        <input v-model="props.form.password" type="password" :class="errors.password ? 'invalid' : ''" 
+                               class="pl-4 text-sm w-full h-full text-heading"/>
+                    </div>
+                    <small class="db-field-alert" v-if="errors.password">
+                        {{ errors.password[0] }}
+                    </small>
+                </div>
                 <button type="submit"
                         class="w-full h-12 text-center capitalize font-medium rounded-3xl mb-6 text-white bg-primary">
                     {{ $t('label.next') }}
@@ -58,6 +68,7 @@ export default {
                 form: {
                     phone: "",
                     code: "",
+                    password: "",
                 },
             },
             flag: "",
@@ -110,6 +121,7 @@ export default {
                             this.props.form = {
                                 phone: "",
                                 code: this.country_code,
+                                password: "",
                             };
                             alertService.success(LoginRes.data.message);
                             if (this.carts.length > 0) {
@@ -127,6 +139,7 @@ export default {
                         this.props.form = {
                             phone: "",
                             code: this.country_code,
+                            password: "",
                         };
                         alertService.success(res.data.message, 'bottom-center');
                         this.$router.push({

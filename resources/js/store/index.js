@@ -45,6 +45,7 @@ import { language } from './modules/language';
 import { frontendBranch } from "./modules/frontend/frontendBranch.js";
 import { frontendLanguage } from "./modules/frontend/frontendLanguage.js";
 import { frontendSetting } from "./modules/frontend/frontendSetting.js";
+import { frontendCompany } from "./modules/frontend/frontendCompany.js";
 import { frontendPage } from "./modules/frontend/frontendPage.js";
 import { globalState } from "./modules/frontend/globalState.js";
 import { frontendSlider } from "./modules/frontend/frontendSlider.js";
@@ -151,6 +152,7 @@ export default new createStore({
         frontendBranch,
         frontendLanguage,
         frontendSetting,
+        frontendCompany,
         frontendPage,
         frontendSlider,
         frontendItemCategory,

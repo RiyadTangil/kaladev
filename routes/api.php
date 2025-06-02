@@ -712,8 +712,9 @@ Route::prefix('frontend')->name('frontend.')->middleware(['installed', 'apiKey',
 
     Route::prefix('item')->name('item.')->group(function () {
         Route::get('/', [FrontendItemController::class, 'index']);
+        Route::get('/{slug}', [FrontendItemController::class, 'show']);
         Route::get('/featured-items', [FrontendItemController::class, 'featuredItems']);
-        Route::get('/popular-items', [FrontendItemController::class, 'mostPopularItems']);
+        Route::get('/popular-items', [FrontendItemController::class, 'popularItems']);
     });
 
     Route::prefix('item-category')->name('item-category.')->group(function () {

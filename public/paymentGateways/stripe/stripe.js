@@ -143,9 +143,9 @@ if (stripeKey) {
 
     // Define payment methods for express checkout
     const paymentMethodsConfig = {
-        card: 'always',
-        applePay: 'always',
-        googlePay: 'always',
+            card: 'always',
+            applePay: 'always',
+            googlePay: 'always',
         link: 'auto',
         klarna: 'auto'  // Changed from 'always' to 'auto'
     };

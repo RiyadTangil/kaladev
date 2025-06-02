@@ -66,13 +66,13 @@ class GuestSignupController extends Controller
                 ]);
                 $otp?->delete();
                 return $this->register(
-                    ['code' => $request->code, 'phone' => $request->phone, 'token' => $request->token]
+                    ['code' => $request->code, 'phone' => $request->phone, 'token' => $request->token, 'password' => $request->password]
                 );
             } elseif ($this->otpManagerService->verify($request) && Settings::group('site')->get(
                     'site_phone_verification'
                 ) == Activity::ENABLE) {
                 return $this->register(
-                    ['code' => $request->code, 'phone' => $request->phone, 'token' => $request->token]
+                    ['code' => $request->code, 'phone' => $request->phone, 'token' => $request->token, 'password' => $request->password]
                 );
             }
         } catch (Exception $exception) {
@@ -93,7 +93,7 @@ class GuestSignupController extends Controller
                 'branch_id'         => 0,
                 'email_verified_at' => Carbon::now()->getTimestamp(),
                 'is_guest'          => Ask::YES,
-                'password'          => Hash::make(rand(111111, 999999))
+                'password'          => Hash::make($array['password'])
             ]);
             $user->assignRole(EnumRole::CUSTOMER);
         }

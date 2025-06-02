@@ -11,6 +11,7 @@ import AddressComponent from "../../components/frontend/account/address/AddressC
 import ChangePasswordComponent from "../../components/frontend/account/changePassword/ChangePasswordComponent.vue";
 import CheckoutComponent from "../../components/frontend/checkout/CheckoutComponent.vue";
 import SearchItemComponent from "../../components/frontend/search/SearchItemComponent.vue";
+import LandingPage from "../../components/frontend/landing/LandingPage.vue";
 
 export default [
     {
@@ -129,5 +130,14 @@ export default [
             isFrontend: true,
             auth: false,
         },
+    },
+    {
+        path: '/landing',
+        component: LandingPage,
+        name: 'frontend.landing',
+        meta: {
+            isFrontend: true,
+            auth: false
+        }
     },
 ];

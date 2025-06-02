@@ -102,17 +102,32 @@ class SubscriberService
     }
 
     /**
-     * @param SubscriberRequest $request
-     * @return Subscriber
+     * @param SubscriberEmailRequest $request
+     * @return void
      * @throws Exception
      */
     public function sendEmail(SubscriberEmailRequest $request)
     {
         try {
-            $subscribers        = Subscriber::select('email')->get();
-            Mail::bcc($subscribers)->send(new SubscriberMail($request->subject, $request->message));
+            $subscribers = Subscriber::select('email')->get();
+            
+            if ($subscribers->isEmpty()) {
+                throw new Exception(trans('all.message.no_subscribers_found'));
+            }
+            
+            // Convert collection to array of email addresses
+            $emailAddresses = $subscribers->pluck('email')->toArray();
+            
+            // Send emails in smaller batches to avoid timeouts
+            $chunks = array_chunk($emailAddresses, 20);
+            
+            foreach ($chunks as $chunk) {
+                Mail::bcc($chunk)->send(new SubscriberMail($request->subject, $request->message));
+            }
+            
+            return true;
         } catch (Exception $exception) {
-            Log::info($exception->getMessage());
+            Log::error('Subscriber email error: ' . $exception->getMessage());
             throw new Exception($exception->getMessage(), 422);
         }
     }
