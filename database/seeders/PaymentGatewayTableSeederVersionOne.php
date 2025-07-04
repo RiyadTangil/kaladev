@@ -115,6 +115,28 @@ class PaymentGatewayTableSeederVersionOne extends Seeder
             ]
         ],
         [
+            "name"    => "Klarna",
+            "slug"    => "klarna",
+            "misc"    => [
+                'input'  => ['klarna.klarnaView.blade.php'],
+                'js'     => ['klarna.klarnaJs.blade.php'],
+                'onClick' => false,
+                'submit' => true
+            ],
+            "status"  => Activity::DISABLE,
+            "options" => [
+                [
+                    "option"     => 'klarna_status',
+                    "value"      => Activity::DISABLE,
+                    "type"       => InputType::SELECT,
+                    "activities" => [
+                        Activity::ENABLE  => "enable",
+                        Activity::DISABLE => "disable",
+                    ]
+                ],
+            ]
+        ],
+        [
             "name"    => "Flutterwave",
             "slug"    => "flutterwave",
             "misc"    => null,

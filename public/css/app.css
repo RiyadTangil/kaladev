@@ -2932,6 +2932,10 @@ input:checked + div svg {
   --tw-bg-opacity: 1 !important;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
 }
+.db-table.\!stripe .db-table-body-tr:nth-child(odd) {
+  --tw-bg-opacity: 1 !important;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity, 1)) !important;
+}
 .db-table-head {
   border-bottom-width: 2px;
   border-top-width: 1px;
@@ -3724,6 +3728,9 @@ input:checked + div svg {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+.-ml-1 {
+  margin-left: -0.25rem;
+}
 .-ml-px {
   margin-left: -1px;
 }
@@ -4183,6 +4190,15 @@ input:checked + div svg {
 }
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  animation: spin 1s linear infinite;
 }
 .cursor-default {
   cursor: default;
@@ -5221,6 +5237,15 @@ input:checked + div svg {
 }
 .opacity-0 {
   opacity: 0;
+}
+.opacity-25 {
+  opacity: 0.25;
+}
+.opacity-50 {
+  opacity: 0.5;
+}
+.opacity-75 {
+  opacity: 0.75;
 }
 .shadow-\[0px_6px_10px_rgba\(251\2c _78\2c _78\2c _0\.24\)\] {
   --tw-shadow: 0px 6px 10px rgba(251, 78, 78, 0.24);
@@ -6731,3 +6756,5 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
     left: 1.25rem;
   }
 }
+
+/*# sourceMappingURL=app.css.map*/

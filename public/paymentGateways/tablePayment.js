@@ -1,13 +1,7 @@
 "use strict";
 
 $(document).on('change', '.paymentMethod', function () {
-    if ($(this).val() == 'stripe') {
-        $('#express-checkout-element').addClass('hidden');
-        $('#stripe-checkout-btn').removeClass('hidden');
-    } else {
-        $('#express-checkout-element').addClass('hidden');
-        $('#stripe-checkout-btn').addClass('hidden');
-    }
+   
 
 
     let paymentMethod = $(this).val();

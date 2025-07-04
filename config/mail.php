@@ -42,7 +42,11 @@ return [
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
+            'auth_mode'  => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'verify_peer' => env('MAIL_VERIFY_PEER', false),
+            'verify_peer_name' => env('MAIL_VERIFY_PEER_NAME', true),
+            'allow_self_signed' => env('MAIL_ALLOW_SELF_SIGNED', false),
         ],
 
         'ses' => [

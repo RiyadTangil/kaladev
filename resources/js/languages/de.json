@@ -763,6 +763,8 @@
         "branch_field_is_required": "Bitte wählen Sie eine geeignte Filiale aus!",
         "zone_required": "Bitte wählen Sie eine Zone",
         "zone_update_successfully" : "Zonenaktualisierung erfolgreich.",
-        "label_required": "Bitte geben Sie eine Beschreibung ein"
+        "label_required": "Bitte geben Sie eine Beschreibung ein",
+        "access_denied": "Zugriff verweigert",
+        "chat_access_disabled": "Der Chat-Zugriff wurde für Ihr Konto deaktiviert. Bitte wenden Sie sich an den Support, um Unterstützung zu erhalten."
     }
 }

@@ -85,7 +85,7 @@
                 @endforeach
             @endif
 
-            @if (!blank($paymentGateways))
+            @if (!blank($paymentGateways) && !request()->is('*klarna*'))
                 <button type="submit"
                     class="py-3 mb-2 w-full rounded-3xl text-center text-base font-medium bg-primary text-white hidden"
                     id="confirmBtn">
@@ -93,11 +93,8 @@
                 </button>
             @endif
 
-            @if (request()->is('*stripe*'))
-                <div id="express-checkout-element" class="my-4 hidden">
-                </div>
-                
-                <!-- Stripe Checkout with Klarna Button -->
+            @if (request()->is('*klarna*'))
+                <!-- Hidden button that will be auto-triggered -->
                 <div class="py-3 w-full rounded-3xl text-center text-base font-medium bg-[#ffb3c7] hover:bg-[#f082a1] text-black cursor-pointer mb-4 flex items-center justify-center shadow-md transition-all duration-200 hidden" id="stripe-checkout-btn">
                     <!-- Klarna Logo SVG -->
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="mr-2">
@@ -106,11 +103,27 @@
                     </svg>
                     {{ __('all.label.pay_with_klarna') }}
                 </div>
+                
+                <!-- Auto-trigger script -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Show the loader
+                        document.getElementById('loading-show').classList.remove('hidden');
+                        
+                        // Short timeout to ensure everything is loaded
+                        setTimeout(function() {
+                            const klarnaButton = document.getElementById('stripe-checkout-btn');
+                            if (klarnaButton) {
+                                klarnaButton.click();
+                            }
+                        }, 500);
+                    });
+                </script>
             @endif
 
             <div id="backBtn"
                 class="py-5 px-4 w-full max-w-3xl mx-auto flex flex-col items-center justify-center {{ !session()->has('error') ? 'hidden' : '' }}">
-                <a class="text-primary" href="{{ url('/checkout') }}">{{ __('all.label.back_to_payment') }}</a>
+                <a class="text-primary" href="{{ url('/checkout') }}">{{ __('all.label.back_to_payment') }} {{ request()->is('*klarnas*')}}</a>
             </div>
         </form>
     </div>
@@ -165,6 +178,11 @@
     @if (!session()->has('error'))
         <script src="{{ asset('paymentGateways/payment.js') }}"></script>
     @endif
+
+    <script>
+        // Debug payment gateways
+        console.log('Payment Gateways:', <?= json_encode($paymentGateways) ?>);
+    </script>
 </body>
 
 </html>

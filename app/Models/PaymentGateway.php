@@ -32,6 +32,8 @@ class PaymentGateway extends Model implements HasMedia
         if (!empty($this->getFirstMediaUrl('payment-gateway'))) {
             return asset($this->getFirstMediaUrl('payment-gateway'));
         }
-        return asset('images/payment-gateway/paypal.png');
+        
+        // Explicitly handle the gateway image based on slug
+        return asset('images/payment-gateway/' . $this->slug . '.png');
     }
 }

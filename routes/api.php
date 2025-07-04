@@ -149,6 +149,7 @@ Route::prefix('auth')->middleware(['installed', 'apiKey', 'localization'])->name
         Route::middleware('verify.api')->group(function () {
             Route::post('/logout', [LoginController::class, 'logout']);
             Route::post('/delete-account', [DeactivateController::class, 'deleteAccount']);
+            Route::get('/refresh-permissions', [LoginController::class, 'refreshPermissions']);
         });
     });
 

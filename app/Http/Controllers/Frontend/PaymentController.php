@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Frontend;
-
+use Illuminate\Support\Facades\Log;
 
 use App\Enums\Activity;
 use App\Enums\PaymentStatus;
@@ -38,6 +38,12 @@ class PaymentController extends Controller
         if ($order?->user?->balance >= $order->total) {
             $credit = true;
         }
+        
+        // Debug gateway images and data
+        foreach ($paymentGateways as $gateway) {
+            Log::debug('Payment Gateway: ' . $gateway->slug . ', Image: ' . $gateway->image);
+        }
+        Log::debug('Payment Gateways: ' . json_encode($paymentGateways, JSON_PRETTY_PRINT));
 
         if (blank($order->transaction) && $order->payment_status === PaymentStatus::UNPAID) {
             return view('payment', [
@@ -108,8 +114,8 @@ class PaymentController extends Controller
     public function tablePayment(
         Order $order
     ): \Illuminate\Contracts\View\Factory | \Illuminate\Contracts\View\View | \Illuminate\Contracts\Foundation\Application | \Illuminate\Http\RedirectResponse {
-      
-      
+
+
         $credit          = false;
         $paymentGateways = PaymentGateway::with('gatewayOptions')->whereNotIn('id', [1])->where(['status' => Activity::ENABLE])->get();
         $company         = Settings::group('company')->all();

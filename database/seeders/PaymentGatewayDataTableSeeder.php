@@ -474,6 +474,16 @@ class PaymentGatewayDataTableSeeder extends Seeder
                     "value" => Activity::ENABLE,
                 ],
             ]
+        ],
+        [
+            "slug" => "klarna",
+            "status" => Activity::ENABLE,
+            "options" => [
+                [
+                    "option" => 'klarna_status',
+                    "value" => Activity::ENABLE,
+                ],
+            ]
         ]
     ];
 

@@ -58,7 +58,7 @@
                 <span class="text-sm leading-6 capitalize">{{ $t('button.edit_profile') }}</span>
             </router-link>
 
-            <router-link :to="{ name: 'frontend.chat' }" v-on:click="linkClick"
+            <router-link v-if="hasChatAccess()" :to="{ name: 'frontend.chat' }" v-on:click="linkClick"
                 class="paper-link transition w-full flex items-center gap-3.5 py-3 border-b last:border-none border-[#EFF0F6]">
                 <i class="lab lab-messages-line lab-font-size-17"></i>
                 <span class="text-sm leading-6 capitalize">{{ $t('button.chat') }}</span>
@@ -166,6 +166,14 @@ export default {
                     alertService.error(err.response.data.message);
                 }
             }
+        },
+        hasChatAccess: function () {
+            const permissions = this.$store.getters.authPermission;
+            if (permissions && Array.isArray(permissions)) {
+                const messagePermission = permissions.find(p => p.name === 'messages' || p.url === 'messages');
+                return messagePermission && messagePermission.access === true;
+            }
+            return true; // Default to showing if permissions aren't properly loaded
         },
     }
 }

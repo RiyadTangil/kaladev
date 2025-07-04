@@ -1,5 +1,5 @@
 <template>
-    <section class="pt-5 sm:py-6">
+    <section class="pt-5 sm:py-6" v-if="hasMessageAccess">
         <div class="container max-w-3xl px-0 sm:px-4">
             <div class="sm:rounded-xl sm:shadow-xs bg-white">
                 <div class="swiper branch-swiper p-2.5 border-b border-gray-200" v-if="branches.length > 1">
@@ -71,6 +71,17 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </section>
+    <section class="pt-5 sm:py-6" v-else>
+        <div class="container max-w-3xl px-0 sm:px-4">
+            <div class="sm:rounded-xl sm:shadow-xs bg-white p-8 text-center">
+                <h3 class="text-xl font-semibold mb-4 text-heading">{{ $t("message.access_denied") }}</h3>
+                <p class="text-paragraph mb-6">{{ $t("message.chat_access_disabled") }}</p>
+                <router-link :to="{ name: 'frontend.home' }" class="bg-primary text-white font-medium py-3 px-6 rounded-3xl inline-flex items-center justify-center hover:bg-[#FF016C] transition">
+                    {{ $t("button.back_to_home") }}
+                </router-link>
             </div>
         </div>
     </section>
@@ -155,10 +166,12 @@ export default {
                     wrapAround: false,
                     snapAlign: 'start',
                 }
-            }
+            },
+            hasMessageAccess: false
         };
     },
     mounted() {
+        this.checkMessageAccess();
         this.branchList();
         const customer = this.$store.getters.authInfo;
         if (Object.keys(this.$route.query).length > 0) {
@@ -195,6 +208,25 @@ export default {
         }
     },
     methods: {
+        checkMessageAccess() {
+            // Get permissions from store
+            const permissions = this.$store.getters.authPermission;
+            console.log("permissions => ", permissions);
+            
+            // Check if messages permission exists and is enabled
+            if (permissions && Array.isArray(permissions)) {
+                const messagePermission = permissions.find(p => p.name === 'messages' || p.url === 'messages');
+                if (messagePermission && messagePermission.access === true) {
+                    this.hasMessageAccess = true;
+                } else {
+                    this.hasMessageAccess = false;
+                }
+            } else {
+                // Default to true if permissions are not properly loaded to avoid blocking legitimate users
+                // This can be changed to false for stricter security
+                this.hasMessageAccess = true;
+            }
+        },
         branchList: function () {
             this.loading.isActive = true;
             this.$store.dispatch("branch/lists", {
@@ -217,6 +249,19 @@ export default {
             this.image = e.target.files[0];
         },
         messageList: function (customer) {
+            // Validate customer object
+            if (!customer || !customer.id) {
+                console.error("Invalid customer object:", customer);
+                // Use the stored customer if available
+                if (this.customer && this.customer.id) {
+                    customer = this.customer;
+                } else {
+                    // If no valid customer, exit early
+                    this.loading.isActive = false;
+                    return;
+                }
+            }
+            
             this.chatProps.form.receiver_id = customer.id;
             this.user = customer;
 
@@ -248,12 +293,28 @@ export default {
                 this.$store.dispatch("frontendMessage/save", fd).then((res) => {
                     this.chatProps.form.text = "";
                     this.image = "";
+                    
+                    // Reset file input
+                    if (this.$refs.imageProperty) {
                     this.$refs.imageProperty.value = null;
-                    let fileList = $(".chat-footer-data-list");
-                    let fileItem = $(".chat-footer-data-item");
-                    fileItem.remove();
-                    fileList[0].classList.add('hidden');
-                    this.messageList(this.defaultProps);
+                    }
+                    
+                    // Use native DOM API instead of jQuery
+                    try {
+                        const fileList = document.querySelector(".chat-footer-data-list");
+                        if (fileList) {
+                            // Clear any existing items
+                            while (fileList.firstChild) {
+                                fileList.removeChild(fileList.firstChild);
+                            }
+                            fileList.classList.add('hidden');
+                        }
+                    } catch (error) {
+                        console.error("Error manipulating DOM:", error);
+                    }
+                    
+                    // Refresh message list
+                    this.messageList(this.customer);
                     this.loading.isActive = false;
                 }).catch((err) => {
                     this.loading.isActive = false;

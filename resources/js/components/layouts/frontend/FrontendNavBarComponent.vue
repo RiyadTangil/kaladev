@@ -144,7 +144,7 @@
                                 <span class="text-sm leading-6 capitalize">{{ $t('button.edit_profile') }}</span>
                             </router-link>
 
-                            <router-link :to="{ name: 'frontend.chat' }"
+                            <router-link v-if="hasChatAccess()" :to="{ name: 'frontend.chat' }" @click.native="refreshPermissions"
                                 class="paper-link transition w-full flex items-center gap-3.5 py-2.5 border-b last:border-none border-[#EFF0F6]">
                                 <i class="lab lab-messages-line lab-font-size-17"></i>
                                 <span class="text-sm leading-6 capitalize">{{ $t('button.chat') }}</span>
@@ -347,6 +347,7 @@ export default {
     components: { LoadingComponent, MapComponent },
     data() {
         return {
+            lastPermissionRefresh: null,
             loading: {
                 isActive: false,
             },
@@ -456,6 +457,9 @@ export default {
         }
     },
     mounted() {
+        // Refresh permissions once when component is first mounted
+        this.refreshPermissions();
+        
         window.addEventListener('scroll', () => {
             const resetRoutes = [
                 'frontend.myOrder',
@@ -823,11 +827,41 @@ export default {
                 location.reload();
             }
         },
+        refreshPermissions: function() {
+            // Only refresh if we haven't refreshed recently (within last 10 seconds)
+            const now = Date.now();
+            if (!this.lastPermissionRefresh || (now - this.lastPermissionRefresh > 10000)) {
+                this.lastPermissionRefresh = now;
+                this.$store.dispatch("refreshPermissions")
+                    .then(() => {
+                        // Permissions updated successfully, no need for console logs in production
+                    })
+                    .catch(error => {
+                        console.error("Error refreshing permissions:", error);
+                    });
+            }
+        },
+        hasChatAccess: function() {
+            const permissions = this.$store.getters.authPermission;
+            if (permissions && Array.isArray(permissions)) {
+                const messagePermission = permissions.find(p => p.name === 'messages' || p.url === 'messages');
+                return messagePermission && messagePermission.access === true;
+            }
+            return true; // Default to showing if permissions aren't properly loaded
+        },
     },
 
     watch: {
         $route(to, from) {
             this.currentRoute = to.path;
+            
+            // Only refresh permissions when navigating to the chat page
+            // or when coming from admin pages that might change permissions
+            if (to.name === 'frontend.chat' || (from.name && from.name.startsWith('admin.'))) {
+                this.$store.dispatch("refreshPermissions").catch(error => {
+                    console.error("Error refreshing permissions:", error);
+                });
+            }
         },
         categories: {
             deep: true,

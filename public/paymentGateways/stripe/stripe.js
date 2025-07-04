@@ -240,21 +240,13 @@ if (stripeKey) {
     });
 
     // Show Klarna button when Stripe is selected
-    $(document).on('change', '.paymentMethod', function() {
-        if ($(this).val() === 'stripe') {
-            $('#stripe-checkout-btn').removeClass('hidden');
-            // Ensure express checkout stays hidden
-            $('#express-checkout-element').addClass('hidden');
-        } else {
-            $('#stripe-checkout-btn').addClass('hidden');
-        }
-    });
+ 
     
     // Initially show Klarna button if Stripe is selected
-    if ($('input[name=paymentMethod]:checked', '#paymentForm').val() === 'stripe') {
-        $('#stripe-checkout-btn').removeClass('hidden');
-        // Ensure express checkout stays hidden
-        $('#express-checkout-element').addClass('hidden');
-    }
+    // if ($('input[name=paymentMethod]:checked', '#paymentForm').val() === 'stripe') {
+    //     $('#stripe-checkout-btn').removeClass('hidden');
+    //     // Ensure express checkout stays hidden
+    //     $('#express-checkout-element').addClass('hidden');
+    // }
 
 }

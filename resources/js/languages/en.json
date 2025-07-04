@@ -380,7 +380,7 @@
         "verify_email": "Verify Email",
         "create_new_password": "Create New Password",
         "mobile_number": "Mobile Number",
-        "lets_get_started": "Let’s get started",
+        "lets_get_started": "Let's get started",
         "already_have_an_account": "Already have an account?",
         "verify_number": "Verify Number",
         "enter_the_code_sent_to": "Enter the code sent to",
@@ -685,7 +685,8 @@
         "import": "Import",
         "sample_file": "Sample File",
         "upload_file": "Upload File",
-        "add_delivery_setup": "Add Delivery Setup"
+        "add_delivery_setup": "Add Delivery Setup",
+        "back_to_home": "Back to Home"
     },
     "number": {
         "10": "10",
@@ -707,7 +708,7 @@
         "image_delete": "Image Delete Successfully.",
         "image_update": "Image Updated Successfully.",
         "subscribe": "Thank you for subscribing.",
-        "have_account": "Don’t have an account?",
+        "have_account": "Don't have an account?",
         "add_note": "Add note (extra mayo, cheese, etc.)",
         "add_to_cart": "Successfully add to cart",
         "empty_cart": "Good food is always cooking! Go ahead, order some yummy items from the menu.",
@@ -737,7 +738,7 @@
         "good_afternoon": "Good Afternoon!",
         "good_evening": "Good Evening!",
         "404_page": "404 Page Not Found!",
-        "find_looking_for": "We can’t seem to find the page you're looking for.",
+        "find_looking_for": "We can't seem to find the page you're looking for.",
         "403_page": "403 Access Denied!",
         "not_authorize": "You tried to access a page you did not have prior authorization for.",
         "discount_error_message": "Discount less then or equal to 100",
@@ -759,11 +760,13 @@
         "zip_code_required": "The zip code field is required",
         "payment_method_required": "The payment method is required.",
         "subtotal_is_less_than_discount_amount": "Subtotal should be greater than discount amount.",
-        "rider_tip_message": "100% of the tips go to your rider, we don’t deduct anything from it.",
+        "rider_tip_message": "100% of the tips go to your rider, we don't deduct anything from it.",
         "minimum_order": "For this area minimum order {amount}",
         "branch_field_is_required": "Branch field is required .",
         "zone_required" : "Please select your zone",
         "zone_update_successfully" : "Zone Update Successfully.",
-        "label_required": "The label field is required."
+        "label_required": "The label field is required.",
+        "access_denied": "Access Denied",
+        "chat_access_disabled": "Chat access has been disabled for your account. Please contact support for assistance."
     }
 }

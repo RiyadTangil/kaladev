@@ -93,6 +93,7 @@ export default [
         meta: {
             isFrontend: true,
             auth: true,
+            permissionUrl: "messages"
         },
     },
     {

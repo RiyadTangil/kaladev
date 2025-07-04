@@ -1,7 +1,7 @@
 <template>
     <LoadingComponent :props="loading" />
     <section class="mb-12">
-        <div class="container" v-if="featuredItems && featuredItems.length > 0">
+        <div class="container" v-if="featuredItems?.length > 0">
             <h2 class="text-2xl font-semibold capitalize mb-6">{{ $t('label.featured_items') }}</h2>
             <ItemComponent :items="featuredItems" :design="itemProps.design" />
         </div>

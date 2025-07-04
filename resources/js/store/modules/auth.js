@@ -41,6 +41,16 @@ export const auth = {
         }
     },
     actions: {
+        refreshPermissions: function (context) {
+            return new Promise((resolve, reject) => {
+                axios.get('auth/refresh-permissions').then((res) => {
+                    context.commit('updatePermissions', res.data);
+                    resolve(res);
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        },
         login: function (context, payload) {
             return new Promise((resolve, reject) => {
                 axios.post('auth/login', payload).then((res) => {
@@ -127,6 +137,10 @@ export const auth = {
         }
     },
     mutations: {
+        updatePermissions: function (state, payload) {
+            state.authPermission = payload.permission;
+            state.authDefaultPermission = payload.defaultPermission;
+        },
         authLogin: function (state, payload) {
             state.authStatus = true;
             state.authToken = payload.token;

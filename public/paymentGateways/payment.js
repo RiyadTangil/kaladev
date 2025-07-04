@@ -13,14 +13,6 @@ for (let item in gateway) {
     }
 }
 
-// Show Klarna button if Stripe is selected
-if (paymentMethod === 'stripe') {
-    $('#stripe-checkout-btn').removeClass('hidden');
-    // Ensure express checkout stays hidden
-    $('#express-checkout-element').addClass('hidden');
-} else {
-    $('#stripe-checkout-btn').addClass('hidden');
-}
 
 let clickGateway = false;
 for (let item in onClickGateway) {

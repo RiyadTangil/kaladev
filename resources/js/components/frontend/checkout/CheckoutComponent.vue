@@ -193,6 +193,7 @@
                                 <span class="text-xs text-center font-medium">{{ credit.name }} ({{ profile.balance
                                     }})</span>
                             </div>
+                        
 
                             <div v-if="setting.site_online_payment_gateway === activityEnum.ENABLE"
                                 v-for="paymentGateway in paymentGateways"
@@ -202,6 +203,9 @@
                                 <img class="h-6" :src="paymentGateway.image" alt="payment" />
                                 <span class="text-xs text-center font-medium">{{ paymentGateway.name }}</span>
                             </div>
+                            
+                        
+                           
                         </div>
                     </div>
                 </div>
@@ -332,7 +336,7 @@
                                         class="flex items-center justify-between text-heading ">
                                         <span class="text-sm leading-6 capitalize">
                                             {{ $t('label.rider_tips') }}
-                                            <span>({{ checkoutProps.form.rider_tip_percentage }}%)</span>
+                                            <span>({{ parseFloat(checkoutProps.form.rider_tip_percentage).toFixed(0) }}%)</span>
                                         </span>
                                         <span class="text-sm leading-6 capitalize text-green-600">
                                             {{
@@ -408,6 +412,7 @@ import 'swiper/css';
 import askEnum from "../../../enums/modules/askEnum.js";
 import statusEnum from "../../../enums/modules/statusEnum.js";
 import { riderTip } from "../../../store/modules/riderTip.js";
+import { loadStripe } from '@stripe/stripe-js';
 
 
 export default {
@@ -449,6 +454,7 @@ export default {
             gatewayId: null,
             credit: {},
             cashOnDelivery: {},
+            klarnaEnabled: true,
             checkoutProps: {
                 form: {
                     branch_id: null,
@@ -699,10 +705,15 @@ export default {
 
         this.$store.dispatch('frontendPaymentGateway/lists', { status: this.statusEnum.ACTIVE }).then(res => {
             if (res.data.data.length > 0) {
+                // Check if Klarna payment gateway is enabled
+                const klarnaGateway = res.data.data.find(gateway => gateway.slug === 'klarna');
+                this.klarnaEnabled = klarnaGateway !== undefined;
+                
                 _.forEach(res.data.data, (gateway) => {
                     if (gateway.slug === "credit") {
                         this.credit = gateway;
                     } else {
+                        console.log("gateway => "   ,gateway);
                         this.paymentGateways.push(gateway);
                     }
                 });
@@ -978,16 +989,142 @@ export default {
         },
         selectPaymentMethod: function (paymentMethod) {
             this.gatewayId = paymentMethod.id;
+            this.paymentMethod = paymentMethod;
+            
             if (paymentMethod.id === paymentTypeEnum.CASH_ON_DELIVERY) {
                 this.checkoutProps.form.rider_tip = 0;
             }
             this.$store.dispatch("frontendCart/paymentMethod", paymentMethod);
+            
+            // Dispatch custom event for Klarna button visibility
+            document.dispatchEvent(new CustomEvent('paymentMethodSelected', {
+                detail: paymentMethod
+            }));
         },
         updateRiderTipPercentage(percentage) {
             this.checkoutProps.form.rider_tip_percentage = percentage;
         },
         calculatePercentageTip(percentage) {
-            return parseFloat(((parseFloat(this.subtotal) * percentage) / 100).toFixed(2));
+            const postDiscountAmount = Math.max(0, parseFloat(this.subtotal) - parseFloat(this.checkoutProps.form.discount));
+            return parseFloat(((postDiscountAmount * percentage) / 100).toFixed(2));
+        },
+        processKlarnaPayment() {
+            this.loading.isActive = true;
+            
+            // Prepare order data
+            this.checkoutProps.form.subtotal = this.subtotal;
+            this.checkoutProps.form.total = this.getTotal();
+            this.checkoutProps.form.items = [];
+            
+            // Populate items from cart
+            _.forEach(this.carts, (item, index) => {
+                let item_variations = [];
+                if (Object.keys(item.item_variations.variations).length > 0) {
+                    _.forEach(item.item_variations.variations, (value, index) => {
+                        item_variations.push({
+                            "id": value,
+                            "item_id": item.item_id,
+                            "item_attribute_id": index,
+                        });
+                    });
+                }
+
+                if (Object.keys(item.item_variations.names).length > 0) {
+                    let i = 0;
+                    _.forEach(item.item_variations.names, (value, index) => {
+                        item_variations[i].variation_name = index;
+                        item_variations[i].name = value;
+                        i++;
+                    });
+                }
+
+                let item_extras = [];
+                if (item.item_extras.extras.length) {
+                    _.forEach(item.item_extras.extras, (value) => {
+                        item_extras.push({
+                            id: value,
+                            item_id: item.item_id,
+                        });
+                    });
+                }
+
+                if (item.item_extras.names.length) {
+                    let i = 0;
+                    _.forEach(item.item_extras.names, (value) => {
+                        item_extras[i].name = value;
+                        i++;
+                    });
+                }
+
+                this.checkoutProps.form.items.push({
+                    item_id: item.item_id,
+                    quantity: item.quantity,
+                    price: item.price,
+                    discount: item.discount,
+                    item_variations: item_variations,
+                    item_extras: item_extras,
+                });
+            });
+            
+            // Submit the order first
+            this.$store.dispatch("frontendOrder/store", this.checkoutProps.form).then((orderResponse) => {
+                this.loading.isActive = false;
+                
+                        // Process with Klarna
+        const orderData = {
+            currency: this.$store.getters['globalState/lists'].currency_code,
+            amount: parseFloat(this.getTotal()),
+        };
+        
+        // Send request to create checkout session for Klarna
+        fetch(env.API_URL + "/payment/" + orderResponse.data.data.id + "/pay", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                order: orderData,
+                paymentMethod: 'klarna',
+                stripeToken: 'express',
+                use_checkout: 'true',
+                klarna_only: 'true'
+            })
+                })
+                .then(response => response.json())
+                .then(async data => {
+                    if (data.sessionId) {
+                        // Load Stripe dynamically
+                        const stripe = await loadStripe(this.$store.getters['frontendSetting/lists'].stripe_key);
+                        if (!stripe) {
+                            throw new Error('Failed to load Stripe');
+                        }
+                        
+                        // Redirect to Stripe Checkout
+                        const result = await stripe.redirectToCheckout({
+                            sessionId: data.sessionId
+                        });
+                        
+                        if (result.error) {
+                            throw new Error(result.error.message);
+                        }
+                    } else {
+                        throw new Error('Missing sessionId');
+                    }
+                })
+                .catch(error => {
+                    console.error('Payment processing error:', error);
+                    this.loading.isActive = false;
+                    alertService.error(this.$t('message.payment_processing_failed'));
+                });
+            }).catch((err) => {
+                this.loading.isActive = false;
+                if (typeof err.response.data.errors === 'object') {
+                    _.forEach(err.response.data.errors, (error) => {
+                        alertService.error(error[0]);
+                    });
+                }
+            });
         },
     },
     watch: {

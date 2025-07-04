@@ -16,7 +16,10 @@ import VueNextSelect from 'vue-next-select';
 import 'vue-next-select/dist/index.css';
 import VueApexCharts from "vue3-apexcharts";
 import ENV from './config/env';
+import DEV_CONFIG from './config/dev';
 
+// Determine if we're in development mode
+const isDev = process.env.NODE_ENV !== 'production';
 
 /* Start tooltip alert code */
 const options = {
@@ -65,4 +68,83 @@ app.use(VueSimpleAlert)
 app.use(VueApexCharts)
 app.use(Toast, options)
 app.use(i18n)
+
+// Helper function to get a more readable component name
+function getReadableComponentName(vm) {
+    if (!vm) return 'Unknown';
+    
+    // Try to get the component file path
+    if (vm.$options && vm.$options.__file) {
+        // Extract just the component name from the file path
+        const filePath = vm.$options.__file;
+        const fileName = filePath.split('/').pop();
+        return fileName;
+    }
+    
+    // Try to get the component name
+    if (vm.$options && vm.$options.name) {
+        return vm.$options.name;
+    }
+    
+    // Try to get the tag name
+    if (vm.$el && vm.$el.tagName) {
+        return vm.$el.tagName.toLowerCase();
+    }
+    
+    return 'Anonymous Component';
+}
+
+// Add global error handler
+app.config.errorHandler = (err, vm, info) => {
+    // Get component name
+    const componentName = getReadableComponentName(vm);
+    const componentPath = vm?.$options?.__file || 'Unknown path';
+    
+    // Format the error message with component information
+    const errorMessage = isDev && DEV_CONFIG.showComponentNames 
+        ? `[Vue Error]: Error in ${componentName} (${componentPath}): ${err.message}`
+        : err.message;
+    
+    // Log detailed error information in development mode
+    if (isDev && DEV_CONFIG.verboseErrors) {
+        console.error(errorMessage);
+        console.error(`Additional Info: ${info}`);
+        console.error(err);
+        
+        // Try to extract the original source location
+        if (err.stack) {
+            const stackLines = err.stack.split('\n');
+            console.error('Error location:');
+            stackLines.slice(1, 4).forEach(line => {
+                // Extract file path and line number from stack trace
+                const match = line.match(/\((.*?):(\d+):(\d+)\)/);
+                if (match) {
+                    const [, filePath, lineNum, colNum] = match;
+                    console.error(`  File: ${filePath}`);
+                    console.error(`  Line: ${lineNum}, Column: ${colNum}`);
+                } else {
+                    console.error(`  ${line.trim()}`);
+                }
+            });
+        }
+    } else {
+        console.error(err);
+    }
+    
+    // Show toast notification in development mode
+    if (isDev) {
+        const toast = app.config.globalProperties.$toast;
+        if (toast) {
+            toast.error(errorMessage);
+        }
+    }
+};
+
+// Add warning handler
+app.config.warnHandler = (msg, vm, trace) => {
+    const componentName = vm?.$options?.__file || 'Unknown component';
+    console.warn(`[Vue Warning]: Warning in ${componentName}: ${msg}`);
+    if (trace) console.warn(`Trace: ${trace}`);
+};
+
 app.mount('#app');

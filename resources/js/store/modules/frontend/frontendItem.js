@@ -6,8 +6,6 @@ export const frontendItem = {
     state: {
         lists: [],
         show: {},
-        featured: [],
-        popular: [],
     },
     getters: {
         lists: function (state) {
@@ -15,12 +13,6 @@ export const frontendItem = {
         },
         show: function (state) {
             return state.show;
-        },
-        featured: function (state) {
-            return state.featured;
-        },
-        popular: function (state) {
-            return state.popular;
         },
     },
     actions: {
@@ -46,30 +38,6 @@ export const frontendItem = {
                 });
             });
         },
-        featured: function (context, payload) {
-            return new Promise((resolve, reject) => {
-                axios.get("frontend/item/featured-items", {
-                    params: payload
-                }).then((res) => {
-                    context.commit("featured", res.data.data);
-                    resolve(res);
-                }).catch((err) => {
-                    reject(err);
-                });
-            });
-        },
-        popular: function (context, payload) {
-            return new Promise((resolve, reject) => {
-                axios.get("frontend/item/popular-items", {
-                    params: payload
-                }).then((res) => {
-                    context.commit("popular", res.data.data);
-                    resolve(res);
-                }).catch((err) => {
-                    reject(err);
-                });
-            });
-        },
     },
     mutations: {
         lists: function (state, payload) {
@@ -77,12 +45,6 @@ export const frontendItem = {
         },
         show: function (state, payload) {
             state.show = payload;
-        },
-        featured: function (state, payload) {
-            state.featured = payload;
-        },
-        popular: function (state, payload) {
-            state.popular = payload;
         },
     },
 };

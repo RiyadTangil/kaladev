@@ -95,4 +95,37 @@ class LoginController extends Controller
             'message' => trans('all.message.logout_success')
         ], 200);
     }
+    
+    /**
+     * Refresh user permissions without requiring logout
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function refreshPermissions(Request $request): JsonResponse
+    {
+        try {
+            $user = $request->user();
+            
+            if (!isset($user->roles[0])) {
+                return new JsonResponse([
+                    'errors' => ['validation' => trans('all.message.role_exist')]
+                ], 400);
+            }
+            
+            $permission = PermissionResource::collection($this->permissionService->permission($user->roles[0]));
+            $defaultPermission = AppLibrary::defaultPermission($permission);
+            
+            return new JsonResponse([
+                'message' => trans('all.message.permissions_refreshed'),
+                'permission' => $permission,
+                'defaultPermission' => $defaultPermission,
+            ], 200);
+        } catch (\Exception $e) {
+            return new JsonResponse([
+                'errors' => ['validation' => $e->getMessage()]
+            ], 500);
+        }
+    }
 }

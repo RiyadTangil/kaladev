@@ -52,7 +52,7 @@ class Stripe extends PaymentAbstract
                 if ($request->use_checkout === 'true') {
                     // Create a checkout session with Klarna support
                     $session = \Stripe\Checkout\Session::create([
-                        'payment_method_types' => $request->klarna_only === 'true' ? ['klarna'] : $paymentMethodTypes,
+                        'payment_method_types' => $request->klarna_only === 'true' || $request->paymentMethod === 'klarna' ? ['klarna'] : $paymentMethodTypes,
                         'line_items' => [[
                             'price_data' => [
                                 'currency' => $currencyLower,
@@ -64,8 +64,8 @@ class Stripe extends PaymentAbstract
                             'quantity' => 1,
                         ]],
                         'mode' => 'payment',
-                        'success_url' => route('payment.success', ['paymentGateway' => 'stripe', 'order' => $order]) . '?session_id={CHECKOUT_SESSION_ID}',
-                        'cancel_url' => route('payment.cancel', ['paymentGateway' => 'stripe', 'order' => $order]),
+                        'success_url' => route('payment.success', ['paymentGateway' => $request->paymentMethod === 'klarna' ? 'klarna' : 'stripe', 'order' => $order]) . '?session_id={CHECKOUT_SESSION_ID}',
+                        'cancel_url' => route('payment.cancel', ['paymentGateway' => $request->paymentMethod === 'klarna' ? 'klarna' : 'stripe', 'order' => $order]),
                     ]);
                     
                 
@@ -88,7 +88,7 @@ class Stripe extends PaymentAbstract
                 ]);
             }
             
-            if ($request->stripeToken !== "express") {
+            if ($request->stripeToken && $request->stripeToken !== "express") {
                 $currencyCode = 'USD';
                 $currencyId   = Settings::group('site')->get('site_default_currency');
                 if (!blank($currencyId)) {
