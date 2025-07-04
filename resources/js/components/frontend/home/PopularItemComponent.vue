@@ -1,7 +1,7 @@
 <template>
     <LoadingComponent :props="loading" />
     <section class="mb-16">
-        <div class="container" v-if="popularItems.length > 0">
+        <div class="container" v-if="popularItems && popularItems.length > 0">
             <div class="flex items-center justify-between gap-2 mb-6">
                 <h2 class="text-2xl font-semibold capitalize">{{ $t('label.most_popular_items') }}</h2>
             </div>
