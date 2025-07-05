@@ -33,6 +33,8 @@ class Paytm extends FormRequest
                 'paytm_industry_type'    => ['required', 'string'],
                 'paytm_mode'             => ['required', 'string'],
                 'paytm_status'           => ['nullable', 'numeric'],
+                'paytm_fee_type'         => ['nullable', 'string'],
+                'paytm_fee_amount'       => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -43,6 +45,8 @@ class Paytm extends FormRequest
                 'paytm_industry_type'    => ['nullable', 'string'],
                 'paytm_mode'             => ['nullable', 'string'],
                 'paytm_status'           => ['nullable', 'numeric'],
+                'paytm_fee_type'         => ['nullable', 'string'],
+                'paytm_fee_amount'       => ['nullable', 'numeric'],
             ];
         }
     }

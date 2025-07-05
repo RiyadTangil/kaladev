@@ -31,6 +31,8 @@ class Sslcommerz extends FormRequest
                 'sslcommerz_store_password' => ['required', 'string'],
                 'sslcommerz_mode'           => ['required', 'string'],
                 'sslcommerz_status'         => ['nullable', 'numeric'],
+                'sslcommerz_fee_type'       => ['nullable', 'string'],
+                'sslcommerz_fee_amount'     => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -39,6 +41,8 @@ class Sslcommerz extends FormRequest
                 'sslcommerz_store_password' => ['nullable', 'string'],
                 'sslcommerz_mode'           => ['nullable', 'string'],
                 'sslcommerz_status'         => ['nullable', 'numeric'],
+                'sslcommerz_fee_type'       => ['nullable', 'string'],
+                'sslcommerz_fee_amount'     => ['nullable', 'numeric'],
             ];
         }
     }

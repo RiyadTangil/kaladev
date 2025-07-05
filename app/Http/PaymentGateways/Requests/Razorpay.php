@@ -26,17 +26,21 @@ class Razorpay extends FormRequest
     {
         if (request()->razorpay_status == Activity::ENABLE) {
             return [
-                'razorpay_key'    => ['required', 'string'],
-                'razorpay_secret' => ['required', 'string'],
-                'razorpay_status' => ['nullable', 'numeric'],
-                'razorpay_mode'   => ['nullable', 'numeric'],
+                'razorpay_key'        => ['required', 'string'],
+                'razorpay_secret'     => ['required', 'string'],
+                'razorpay_status'     => ['nullable', 'numeric'],
+                'razorpay_mode'       => ['nullable', 'numeric'],
+                'razorpay_fee_type'   => ['nullable', 'string'],
+                'razorpay_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
-                'razorpay_key'    => ['nullable', 'string'],
-                'razorpay_secret' => ['nullable', 'string'],
-                'razorpay_status' => ['nullable', 'numeric'],
-                'razorpay_mode'   => ['nullable', 'numeric'],
+                'razorpay_key'        => ['nullable', 'string'],
+                'razorpay_secret'     => ['nullable', 'string'],
+                'razorpay_status'     => ['nullable', 'numeric'],
+                'razorpay_mode'       => ['nullable', 'numeric'],
+                'razorpay_fee_type'   => ['nullable', 'string'],
+                'razorpay_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

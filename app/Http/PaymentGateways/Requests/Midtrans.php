@@ -30,6 +30,8 @@ class Midtrans extends FormRequest
                 'midtrans_client_key' => ['required', 'string'],
                 'midtrans_mode'       => ['required', 'numeric'],
                 'midtrans_status'     => ['nullable', 'numeric'],
+                'midtrans_fee_type'   => ['nullable', 'string'],
+                'midtrans_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Midtrans extends FormRequest
                 'midtrans_client_key' => ['nullable', 'string'],
                 'midtrans_mode'       => ['nullable', 'numeric'],
                 'midtrans_status'     => ['nullable', 'numeric'],
+                'midtrans_fee_type'   => ['nullable', 'string'],
+                'midtrans_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

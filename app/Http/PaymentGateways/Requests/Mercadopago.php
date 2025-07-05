@@ -30,6 +30,8 @@ class Mercadopago extends FormRequest
                 'mercadopago_client_secret' => ['required', 'string'],
                 'mercadopago_mode'          => ['required', 'string'],
                 'mercadopago_status'        => ['nullable', 'numeric'],
+                'mercadopago_fee_type'      => ['nullable', 'string'],
+                'mercadopago_fee_amount'    => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Mercadopago extends FormRequest
                 'mercadopago_client_secret' => ['nullable', 'string'],
                 'mercadopago_mode'          => ['nullable', 'string'],
                 'mercadopago_status'        => ['nullable', 'numeric'],
+                'mercadopago_fee_type'      => ['nullable', 'string'],
+                'mercadopago_fee_amount'    => ['nullable', 'numeric'],
             ];
         }
     }

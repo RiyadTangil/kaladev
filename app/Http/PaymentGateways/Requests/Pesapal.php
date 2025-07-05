@@ -31,6 +31,8 @@ class Pesapal extends FormRequest
                 'pesapal_ipn_id'          => ['required', 'string'],
                 'pesapal_mode'            => ['required', 'string'],
                 'pesapal_status'          => ['nullable', 'numeric'],
+                'pesapal_fee_type'        => ['nullable', 'string'],
+                'pesapal_fee_amount'      => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -39,6 +41,8 @@ class Pesapal extends FormRequest
                 'pesapal_ipn_id'          => ['nullable', 'string'],
                 'pesapal_mode'            => ['nullable', 'string'],
                 'pesapal_status'          => ['nullable', 'numeric'],
+                'pesapal_fee_type'        => ['nullable', 'string'],
+                'pesapal_fee_amount'      => ['nullable', 'numeric'],
             ];
         }
     }

@@ -29,12 +29,16 @@ class Mollie extends FormRequest
                 'mollie_api_key' => ['required', 'string'],
                 'mollie_mode'    => ['required', 'string'],
                 'mollie_status'  => ['nullable', 'numeric'],
+                'mollie_fee_type' => ['nullable', 'string'],
+                'mollie_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
                 'mollie_api_key' => ['nullable', 'string'],
                 'mollie_mode'    => ['nullable', 'string'],
                 'mollie_status'  => ['nullable', 'numeric'],
+                'mollie_fee_type' => ['nullable', 'string'],
+                'mollie_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

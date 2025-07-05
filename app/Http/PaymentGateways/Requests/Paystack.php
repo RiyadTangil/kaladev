@@ -31,6 +31,8 @@ class Paystack extends FormRequest
                 'paystack_payment_url' => ['required', 'string'],
                 'paystack_mode'        => ['required', 'string'],
                 'paystack_status'      => ['nullable', 'numeric'],
+                'paystack_fee_type'    => ['nullable', 'string'],
+                'paystack_fee_amount'  => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -39,6 +41,8 @@ class Paystack extends FormRequest
                 'paystack_payment_url' => ['nullable', 'string'],
                 'paystack_mode'        => ['nullable', 'string'],
                 'paystack_status'      => ['nullable', 'numeric'],
+                'paystack_fee_type'    => ['nullable', 'string'],
+                'paystack_fee_amount'  => ['nullable', 'numeric'],
             ];
         }
     }

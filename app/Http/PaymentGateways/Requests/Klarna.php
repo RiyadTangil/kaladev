@@ -11,6 +11,8 @@ class Klarna
         return [
             'payment_type' => 'required|string',
             'klarna_status' => 'required|numeric',
+            'klarna_fee_type' => 'nullable|string',
+            'klarna_fee_amount' => 'nullable|numeric',
         ];
     }
 
@@ -28,6 +30,14 @@ class Klarna
             [
                 'option' => 'klarna_status',
                 'value' => request('klarna_status'),
+            ],
+            [
+                'option' => 'klarna_fee_type',
+                'value' => request('klarna_fee_type'),
+            ],
+            [
+                'option' => 'klarna_fee_amount',
+                'value' => request('klarna_fee_amount'),
             ],
         ];
     }

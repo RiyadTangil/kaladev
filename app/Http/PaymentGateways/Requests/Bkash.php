@@ -31,7 +31,9 @@ class Bkash extends FormRequest
                 'bkash_username'   => ['required', 'string'],
                 'bkash_password'   => ['required', 'string'],
                 'bkash_mode'       => ['required', 'string'],
-                'bkash_status'    => ['nullable', 'numeric'],
+                'bkash_status'     => ['nullable', 'numeric'],
+                'bkash_fee_type'   => ['nullable', 'string'],
+                'bkash_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -41,6 +43,8 @@ class Bkash extends FormRequest
                 'bkash_password'   => ['nullable', 'string'],
                 'bkash_mode'       => ['nullable', 'string'],
                 'bkash_status'     => ['nullable', 'numeric'],
+                'bkash_fee_type'   => ['nullable', 'string'],
+                'bkash_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

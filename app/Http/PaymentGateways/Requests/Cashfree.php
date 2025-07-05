@@ -30,6 +30,8 @@ class Cashfree extends FormRequest
                 'cashfree_secret_key' => ['required', 'string'],
                 'cashfree_mode'       => ['required', 'string'],
                 'cashfree_status'     => ['nullable', 'numeric'],
+                'cashfree_fee_type'   => ['nullable', 'string'],
+                'cashfree_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Cashfree extends FormRequest
                 'cashfree_secret_key' => ['nullable', 'string'],
                 'cashfree_mode'       => ['nullable', 'string'],
                 'cashfree_status'     => ['nullable', 'numeric'],
+                'cashfree_fee_type'   => ['nullable', 'string'],
+                'cashfree_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

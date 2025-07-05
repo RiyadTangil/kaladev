@@ -30,6 +30,8 @@ class Skrill extends FormRequest
                 'skrill_merchant_api_password' => ['required', 'string'],
                 'skrill_mode'                  => ['required', 'string'],
                 'skrill_status'                => ['nullable', 'numeric'],
+                'skrill_fee_type'              => ['nullable', 'string'],
+                'skrill_fee_amount'            => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Skrill extends FormRequest
                 'skrill_merchant_api_password' => ['nullable', 'string'],
                 'skrill_mode'                  => ['nullable', 'string'],
                 'skrill_status'                => ['nullable', 'numeric'],
+                'skrill_fee_type'              => ['nullable', 'string'],
+                'skrill_fee_amount'            => ['nullable', 'numeric'],
             ];
         }
     }

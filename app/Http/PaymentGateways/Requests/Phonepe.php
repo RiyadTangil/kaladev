@@ -32,6 +32,8 @@ class Phonepe extends FormRequest
                 'phonepe_key'              => ['required', 'string'],
                 'phonepe_mode'             => ['required', 'string'],
                 'phonepe_status'           => ['nullable', 'numeric'],
+                'phonepe_fee_type'         => ['nullable', 'string'],
+                'phonepe_fee_amount'       => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -41,6 +43,8 @@ class Phonepe extends FormRequest
                 'phonepe_key'              => ['nullable', 'string'],
                 'phonepe_mode'             => ['nullable', 'string'],
                 'phonepe_status'           => ['nullable', 'numeric'],
+                'phonepe_fee_type'         => ['nullable', 'string'],
+                'phonepe_fee_amount'       => ['nullable', 'numeric'],
             ];
         }
     }

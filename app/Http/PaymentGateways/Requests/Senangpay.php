@@ -30,6 +30,8 @@ class Senangpay extends FormRequest
                 'senangpay_secret_key'  => ['required', 'string'],
                 'senangpay_mode'        => ['required', 'string'],
                 'senangpay_status'      => ['nullable', 'numeric'],
+                'senangpay_fee_type'    => ['nullable', 'string'],
+                'senangpay_fee_amount'  => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Senangpay extends FormRequest
                 'senangpay_secret_key'  => ['nullable', 'string'],
                 'senangpay_mode'        => ['nullable', 'string'],
                 'senangpay_status'      => ['nullable', 'numeric'],
+                'senangpay_fee_type'    => ['nullable', 'string'],
+                'senangpay_fee_amount'  => ['nullable', 'numeric'],
             ];
         }
     }

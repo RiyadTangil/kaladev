@@ -30,6 +30,8 @@ class Flutterwave extends FormRequest
                 'flutterwave_secret_key' => ['required', 'string'],
                 'flutterwave_mode'       => ['required', 'string'],
                 'flutterwave_status'     => ['nullable', 'numeric'],
+                'flutterwave_fee_type'   => ['nullable', 'string'],
+                'flutterwave_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Flutterwave extends FormRequest
                 'flutterwave_secret_key' => ['nullable', 'string'],
                 'flutterwave_mode'       => ['nullable', 'string'],
                 'flutterwave_status'     => ['nullable', 'numeric'],
+                'flutterwave_fee_type'   => ['nullable', 'string'],
+                'flutterwave_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

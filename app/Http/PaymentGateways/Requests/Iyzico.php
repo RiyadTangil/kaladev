@@ -30,6 +30,8 @@ class Iyzico extends FormRequest
                 'iyzico_secret_key' => ['required', 'string'],
                 'iyzico_mode' => ['required', 'string'],
                 'iyzico_status' => ['nullable', 'numeric'],
+                'iyzico_fee_type' => ['nullable', 'string'],
+                'iyzico_fee_amount' => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Iyzico extends FormRequest
                 'iyzico_secret_key' => ['nullable', 'string'],
                 'iyzico_mode' => ['nullable', 'string'],
                 'iyzico_status' => ['nullable', 'numeric'],
+                'iyzico_fee_type' => ['nullable', 'string'],
+                'iyzico_fee_amount' => ['nullable', 'numeric'],
             ];
         }
     }

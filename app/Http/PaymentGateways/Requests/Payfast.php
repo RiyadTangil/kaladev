@@ -31,6 +31,8 @@ class Payfast extends FormRequest
                 'payfast_passphrase'   => ['required', 'string'],
                 'payfast_mode'         => ['required', 'string'],
                 'payfast_status'       => ['nullable', 'numeric'],
+                'payfast_fee_type'     => ['nullable', 'string'],
+                'payfast_fee_amount'   => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -39,6 +41,8 @@ class Payfast extends FormRequest
                 'payfast_passphrase'   => ['nullable', 'string'],
                 'payfast_mode'         => ['nullable', 'string'],
                 'payfast_status'       => ['nullable', 'numeric'],
+                'payfast_fee_type'     => ['nullable', 'string'],
+                'payfast_fee_amount'   => ['nullable', 'numeric'],
             ];
         }
     }

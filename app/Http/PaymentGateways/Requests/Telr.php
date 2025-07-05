@@ -30,6 +30,8 @@ class Telr extends FormRequest
                 'telr_store_auth_key' => ['required', 'string'],
                 'telr_mode'             => ['required', 'string'],
                 'telr_status'           => ['nullable', 'numeric'],
+                'telr_fee_type'         => ['nullable', 'string'],
+                'telr_fee_amount'       => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -37,6 +39,8 @@ class Telr extends FormRequest
                 'telr_store_auth_key' => ['nullable', 'string'],
                 'telr_mode'             => ['nullable', 'string'],
                 'telr_status'           => ['nullable', 'numeric'],
+                'telr_fee_type'         => ['nullable', 'string'],
+                'telr_fee_amount'       => ['nullable', 'numeric'],
             ];
         }
     }
