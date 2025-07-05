@@ -25,6 +25,7 @@ class OrderResource extends JsonResource
             'order_items'                    => optional($this->orderItems)->count(),
             "total_currency_price"           => AppLibrary::currencyAmountFormat($this->total),
             "total_tax_currency_price"       => AppLibrary::currencyAmountFormat($this->total_tax),
+            "payment_method_fee_currency_price" => AppLibrary::currencyAmountFormat($this->payment_method_fee),
             "total_amount_price"             => AppLibrary::flatAmountFormat($this->total),
             "discount_currency_price"        => AppLibrary::currencyAmountFormat($this->discount),
             "delivery_charge_currency_price" => AppLibrary::currencyAmountFormat($this->delivery_charge),

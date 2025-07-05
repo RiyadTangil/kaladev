@@ -5165,6 +5165,10 @@ input:checked + div svg {
   --tw-text-opacity: 1;
   color: rgb(251 78 78 / var(--tw-text-opacity, 1));
 }
+.text-\[\#FF6B35\] {
+  --tw-text-opacity: 1;
+  color: rgb(255 107 53 / var(--tw-text-opacity, 1));
+}
 .text-\[\#FFDB1F\] {
   --tw-text-opacity: 1;
   color: rgb(255 219 31 / var(--tw-text-opacity, 1));

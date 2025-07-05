@@ -28,6 +28,8 @@ class OrderDetailsResource extends JsonResource
             "delivery_charge_currency_price"      => AppLibrary::currencyAmountFormat($this->delivery_charge),
             "total_currency_price"                => AppLibrary::currencyAmountFormat($this->total),
             "total_tax_currency_price"            => AppLibrary::currencyAmountFormat($this->total_tax),
+            "payment_method_fee_currency_price"   => AppLibrary::currencyAmountFormat($this->payment_method_fee),
+            "payment_method_fee_price"            => $this->payment_method_fee,
             'order_type'                          => $this->order_type,
             'order_datetime'                      => AppLibrary::datetime($this->order_datetime),
             'order_date'                          => AppLibrary::date($this->order_datetime),

@@ -31,6 +31,8 @@ class Paypal extends FormRequest
                 'paypal_client_id'     => ['required', 'string'],
                 'paypal_client_secret' => ['required', 'string'],
                 'paypal_status'        => ['nullable', 'numeric'],
+                'paypal_fee_type'      => ['nullable', 'string'],
+                'paypal_fee_amount'    => ['nullable', 'numeric'],
             ];
         } else {
             return [
@@ -39,6 +41,8 @@ class Paypal extends FormRequest
                 'paypal_client_id'     => ['nullable', 'string'],
                 'paypal_client_secret' => ['nullable', 'string'],
                 'paypal_status'        => ['nullable', 'numeric'],
+                'paypal_fee_type'      => ['nullable', 'string'],
+                'paypal_fee_amount'    => ['nullable', 'numeric'],
             ];
         }
     }

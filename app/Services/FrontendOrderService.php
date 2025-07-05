@@ -31,6 +31,7 @@ use App\Http\Requests\PaginateRequest;
 use Smartisan\Settings\Facades\Settings;
 use App\Http\Requests\OrderStatusRequest;
 use App\Events\SendOrderGotPush;
+use App\Services\PaymentMethodFeeService;
 
 class FrontendOrderService
 {
@@ -162,8 +163,23 @@ class FrontendOrderService
                     OrderItem::insert($itemsArray);
                 }
 
+                // Calculate payment method fee if payment method is provided
+                $paymentMethodFee = 0;
+                if ($request->payment_method && $request->payment_method > 0) {
+                    $paymentFeeService = new PaymentMethodFeeService();
+                    $orderAmountForFee = $this->frontendOrder->subtotal + $totalTax + $this->frontendOrder->delivery_charge - $this->frontendOrder->discount - ($this->frontendOrder->point_discount_amount ?? 0);
+                    $paymentMethodFee = $paymentFeeService->calculateFee($request->payment_method, $orderAmountForFee);
+                }
+
                 $this->frontendOrder->order_serial_no = date('dmy') . $this->frontendOrder->id;
                 $this->frontendOrder->total_tax = $totalTax;
+                $this->frontendOrder->payment_method_fee = $paymentMethodFee;
+                
+                // Recalculate total with payment method fee
+                if ($paymentMethodFee > 0) {
+                    $this->frontendOrder->total = $this->frontendOrder->subtotal + $totalTax + $this->frontendOrder->delivery_charge + $paymentMethodFee + ($this->frontendOrder->rider_tip ?? 0) - $this->frontendOrder->discount - ($this->frontendOrder->point_discount_amount ?? 0);
+                }
+                
                 $this->frontendOrder->save();
 
                 if ($request->address_id) {

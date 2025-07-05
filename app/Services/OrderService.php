@@ -41,6 +41,7 @@ use Smartisan\Settings\Facades\Settings;
 use App\Http\Requests\OrderStatusRequest;
 use App\Http\Requests\PaymentStatusRequest;
 use App\Http\Requests\TableOrderTokenRequest;
+use App\Services\PaymentMethodFeeService;
 
 class OrderService
 {
@@ -375,13 +376,27 @@ class OrderService
                     }
                 }
 
-
                 if (!blank($itemsArray)) {
                     OrderItem::insert($itemsArray);
                 }
 
+                // Calculate payment method fee if payment method is provided
+                $paymentMethodFee = 0;
+                if ($request->payment_method && $request->payment_method > 0) {
+                    $paymentFeeService = new PaymentMethodFeeService();
+                    $orderAmountForFee = $this->order->subtotal + $totalTax + $this->order->delivery_charge - $this->order->discount;
+                    $paymentMethodFee = $paymentFeeService->calculateFee($request->payment_method, $orderAmountForFee);
+                }
+
                 $this->order->order_serial_no = date('dmy') . $this->order->id;
                 $this->order->total_tax = $totalTax;
+                $this->order->payment_method_fee = $paymentMethodFee;
+                
+                // Recalculate total with payment method fee
+                if ($paymentMethodFee > 0) {
+                    $this->order->total = $this->order->subtotal + $totalTax + $this->order->delivery_charge + $paymentMethodFee - $this->order->discount;
+                }
+                
                 $this->order->save();
             });
             return $this->order;

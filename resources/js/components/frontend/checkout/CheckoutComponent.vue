@@ -361,6 +361,20 @@
                                             }}
                                         </span>
                                     </li>
+                                    <li v-if="paymentMethodFee > 0"
+                                        class="flex items-center justify-between text-heading">
+                                        <span class="text-sm leading-6 capitalize">
+                                            {{ $t('label.payment_method_fee') }}
+                                        </span>
+                                        <span class="text-sm leading-6 capitalize font-medium text-[#FF6B35]">
+                                            {{
+                                                currencyFormat(paymentMethodFee,
+                                                    setting.site_digit_after_decimal_point,
+                                                    setting.site_default_currency_symbol,
+                                                    setting.site_currency_position)
+                                            }}
+                                        </span>
+                                    </li>
                                 </ul>
                                 <div class="flex items-center justify-between p-3">
                                     <h4 class="text-sm leading-6 font-semibold capitalize">
@@ -368,9 +382,7 @@
                                     </h4>
                                     <h5 class="text-sm leading-6 font-semibold capitalize">
                                         {{
-                                            currencyFormat(subtotal + parseFloat(checkoutProps.form.rider_tip) +
-                                                checkoutProps.form.delivery_charge - checkoutProps.form.discount -
-                                                checkoutProps.form.point_discount_amount,
+                                            currencyFormat(getTotal(),
                                                 setting.site_digit_after_decimal_point, setting.site_default_currency_symbol,
                                                 setting.site_currency_position)
                                         }}
@@ -651,6 +663,35 @@ export default {
         paymentMethod: function () {
             return this.$store.getters['frontendCart/paymentMethod'];
         },
+        paymentMethodFee: function () {
+            
+            if (Object.keys(this.paymentMethod).length === 0 || !this.paymentMethod.options) {
+                return 0;
+            }
+            
+            // Convert options array to object for easier access
+            const gatewayOptions = {};
+            this.paymentMethod.options.forEach(option => {
+                gatewayOptions[option.option] = option.value;
+            });
+            
+                          const feeType = gatewayOptions[this.paymentMethod.slug + '_fee_type'];
+              const feeAmount = gatewayOptions[this.paymentMethod.slug + '_fee_amount'];
+              
+              if (!feeType || !feeAmount) {
+                return 0;
+            }
+            
+            const orderAmountForFee = this.subtotal + this.checkoutProps.form.delivery_charge + this.checkoutProps.form.rider_tip - this.checkoutProps.form.discount - this.checkoutProps.form.point_discount_amount;
+            
+            if (feeType === 'percentage') {
+                return parseFloat(((orderAmountForFee * feeAmount) / 100).toFixed(2));
+            } else if (feeType === 'fixed') {
+                return parseFloat(feeAmount);
+            }
+            
+            return 0;
+        },
     },
     mounted() {
         this.loading.isActive = true;
@@ -874,11 +915,12 @@ export default {
             }
         },
         getTotal: function () {
-            return parseFloat(this.subtotal + +this.checkoutProps.form.rider_tip + this.checkoutProps.form.delivery_charge - this.checkoutProps.form.discount - this.checkoutProps.form.point_discount_amount).toFixed(this.setting.site_digit_after_decimal_point);
+            return parseFloat(this.subtotal + +this.checkoutProps.form.rider_tip + this.checkoutProps.form.delivery_charge + this.paymentMethodFee - this.checkoutProps.form.discount - this.checkoutProps.form.point_discount_amount).toFixed(this.setting.site_digit_after_decimal_point);
         },
         orderSubmit: function () {
             this.loading.isActive = true;
             this.checkoutProps.form.subtotal = this.subtotal;
+            this.checkoutProps.form.payment_method_fee = this.paymentMethodFee;
             this.checkoutProps.form.total = this.getTotal();
             this.checkoutProps.form.items = [];
             _.forEach(this.carts, (item, index) => {

@@ -39,7 +39,8 @@ class OrderRequest extends FormRequest
                 'required',
                 'numeric'
             ] : ['nullable'],
-            'total'            => ['required', 'numeric'],
+            'payment_method_fee'    => ['nullable', 'numeric'],
+            'total'                 => ['required', 'numeric'],
             'order_type'       => ['required', 'numeric'],
             'is_advance_order' => ['required', 'numeric'],
             'address_id'       => request('order_type') === OrderType::DELIVERY ? [

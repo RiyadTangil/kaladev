@@ -26,17 +26,21 @@ class Stripe extends FormRequest
     {
         if (request()->stripe_status == Activity::ENABLE) {
             return [
-                'stripe_key'    => ['required', 'string'],
-                'stripe_secret' => ['required', 'string'],
-                'stripe_mode'   => ['required', 'string'],
-                'stripe_status' => ['nullable', 'numeric'],
+                'stripe_key'          => ['required', 'string'],
+                'stripe_secret'       => ['required', 'string'],
+                'stripe_mode'         => ['required', 'string'],
+                'stripe_status'       => ['nullable', 'numeric'],
+                'stripe_fee_type'     => ['nullable', 'string'],
+                'stripe_fee_amount'   => ['nullable', 'numeric'],
             ];
         } else {
             return [
-                'stripe_key'    => ['nullable', 'string'],
-                'stripe_secret' => ['nullable', 'string'],
-                'stripe_mode'   => ['nullable', 'string'],
-                'stripe_status' => ['nullable', 'numeric'],
+                'stripe_key'          => ['nullable', 'string'],
+                'stripe_secret'       => ['nullable', 'string'],
+                'stripe_mode'         => ['nullable', 'string'],
+                'stripe_status'       => ['nullable', 'numeric'],
+                'stripe_fee_type'     => ['nullable', 'string'],
+                'stripe_fee_amount'   => ['nullable', 'numeric'],
             ];
         }
     }

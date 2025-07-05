@@ -31,6 +31,7 @@ return [
         'transaction_id'   => 'Transaction ID',
         'back_to_home'     => 'Back to Home',
         'payment_method'   => 'Payment Method',
+        'payment_method_fee' => 'Payment Method Fee',
         'now'              => 'Now',
         'balance'          => 'Balance',
         'advance'          => 'Advance',
@@ -46,7 +47,16 @@ return [
         'back_to_payment'  => 'Back to Payment',
         'end_time'         => 'End Time',
         'day'              => 'Day',
-        'pay_with_klarna'  => 'Pay with Klarna'
+        'pay_with_klarna'  => 'Pay with Klarna',
+        "stripe_secret"    => "Stripe Secret",
+        "stripe_fee_type"  => "Stripe Fee Type",
+        "stripe_fee_amount" => "Stripe Fee Amount",
+        "stripe_status"    => "Stripe Status",
+        "paypal_fee_type"  => "PayPal Fee Type",
+        "paypal_fee_amount" => "PayPal Fee Amount",
+        "paypal_status"    => "PayPal Status",
+        "percentage"       => "Percentage",
+        "fixed"            => "Fixed Amount"
     ],
     'message' => [
         'validation_error'            => 'Validation Error.',

@@ -62,6 +62,21 @@ class PaymentGatewayTableSeederVersionOne extends Seeder
                     ]
                 ],
                 [
+                    "option"     => 'paypal_fee_type',
+                    "value"      => 'fixed',
+                    "type"       => InputType::SELECT,
+                    "activities" => [
+                        'percentage' => 'percentage',
+                        'fixed'      => 'fixed'
+                    ]
+                ],
+                [
+                    "option"     => 'paypal_fee_amount',
+                    "value"      => '0.50',
+                    "type"       => InputType::TEXT,
+                    "activities" => ''
+                ],
+                [
                     "option"     => 'paypal_status',
                     "value"      => Activity::DISABLE,
                     "type"       => InputType::SELECT,
@@ -102,6 +117,21 @@ class PaymentGatewayTableSeederVersionOne extends Seeder
                         GatewayMode::SANDBOX => 'sandbox',
                         GatewayMode::LIVE    => 'live'
                     ]
+                ],
+                [
+                    "option"     => 'stripe_fee_type',
+                    "value"      => 'percentage',
+                    "type"       => InputType::SELECT,
+                    "activities" => [
+                        'percentage' => 'percentage',
+                        'fixed'      => 'fixed'
+                    ]
+                ],
+                [
+                    "option"     => 'stripe_fee_amount',
+                    "value"      => '3.00',
+                    "type"       => InputType::TEXT,
+                    "activities" => ''
                 ],
                 [
                     "option"     => 'stripe_status',

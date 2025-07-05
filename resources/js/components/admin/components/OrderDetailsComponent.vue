@@ -150,6 +150,12 @@
                                 <span class="text-sm leading-6 capitalize font-medium text-[#1AB759]">
                                     {{ order.delivery_charge_currency_price }}</span>
                             </li>
+                            <li class="flex items-center justify-between text-heading"
+                                v-if="order.payment_method_fee_price > 0">
+                                <span class="text-sm leading-6 capitalize">{{ $t("label.payment_method_fee") }}</span>
+                                <span class="text-sm leading-6 capitalize font-medium text-[#FF6B35]">
+                                    {{ order.payment_method_fee_currency_price }}</span>
+                            </li>
                         </ul>
                         <div class="flex items-center justify-between p-3">
                             <h4 class="text-sm leading-6 font-semibold capitalize">{{ $t("label.total") }}</h4>

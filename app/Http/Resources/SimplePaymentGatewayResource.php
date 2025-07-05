@@ -22,7 +22,8 @@ class SimplePaymentGatewayResource extends JsonResource
             'name'   => $this->name,
             'slug'   => $this->slug,
             'status' => $this->status,
-            'image'  => $this->image
+            'image'  => $this->image,
+            'options' => $this->gatewayOptions ? GatewayOptionsResource::collection($this->gatewayOptions) : []
         ];
     }
 
